@@ -29,7 +29,7 @@ export const Navbar = () => {
           </Link>
         </div>
         <div className="flex flex-1 justify-center">
-          <div className="flex ml-auto items-center text-2xl gap-3">
+          <div className="flex ml-auto items-center text-2xl gap-4">
             <Link>
               <FiSearch />
             </Link>
