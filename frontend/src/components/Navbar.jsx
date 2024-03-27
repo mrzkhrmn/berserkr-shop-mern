@@ -33,7 +33,7 @@ export const Navbar = () => {
             <Link>
               <FiSearch />
             </Link>
-            <Link>
+            <Link to={"/login"}>
               <FiUser />
             </Link>
             <Link>
