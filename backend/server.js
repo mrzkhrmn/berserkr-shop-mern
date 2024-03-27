@@ -9,6 +9,8 @@ dotenv.config();
 const app = express();
 
 app.use(cors());
+app.use(express.json()); // to parse JSON data in the req.body
+app.use(express.urlencoded({ extended: true })); // to parse form data in the req.body
 
 app.use("/api/auth", authRouter);
 
