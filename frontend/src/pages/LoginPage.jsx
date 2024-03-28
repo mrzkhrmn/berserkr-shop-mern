@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   loginFailure,
   loginStart,
   loginSuccess,
-  registerFailure,
 } from "../redux/user/userSlice";
 
 export const LoginPage = () => {
+  const { loading } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({});
 
   const dispatch = useDispatch();
@@ -29,7 +29,7 @@ export const LoginPage = () => {
       });
       const data = await res.json();
       if (data.error) {
-        registerFailure(data.error);
+        loginFailure(data.error);
         console.log(data.error);
         return;
       }
@@ -86,6 +86,7 @@ export const LoginPage = () => {
             <div className="flex flex-col gap-4">
               <button
                 type="submit"
+                disabled={loading}
                 className="w-full px-4 py-2 border border-white hover:border-black hover:bg-white hover:text-black transition duration-300"
               >
                 Üye Girişi
