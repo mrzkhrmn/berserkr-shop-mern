@@ -1,10 +1,27 @@
 import { Link } from "react-router-dom";
 import { FiSearch, FiUser, FiShoppingCart } from "react-icons/fi";
 import { Dropdown, Avatar } from "flowbite-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutSuccess } from "../redux/user/userSlice";
 
 export const Navbar = () => {
   const { currentUser } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
+
+  async function handleLogout() {
+    try {
+      const res = await fetch("/api/auth/logout", { method: "POST" });
+      const data = await res.json();
+      if (data.error) {
+        console.log(data.error);
+        return;
+      }
+      dispatch(logoutSuccess());
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <header className="bg-black">
       <div className="flex flex-col md:flex-row py-8  items-center container mx-auto gap-6 xl:gap-0">
@@ -62,11 +79,11 @@ export const Navbar = () => {
                 </Link>
                 <Dropdown.Divider />
                 <Dropdown.Item>
-                  <button>Sign Out</button>
+                  <button onClick={handleLogout}>Sign Out</button>
                 </Dropdown.Item>
               </Dropdown>
             ) : (
-              <Link to={"/login"}>
+              <Link to={"/login"} className="px-4">
                 <FiUser />
               </Link>
             )}

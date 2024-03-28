@@ -69,3 +69,12 @@ export const login = async (req, res) => {
     console.log("Error in loginUser: " + error.message);
   }
 };
+
+export const logout = (req, res) => {
+  try {
+    res.clearCookie("jwt").status(200).json("User has been signed out");
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+    console.log("Error in logoutUser: " + error.message);
+  }
+};
