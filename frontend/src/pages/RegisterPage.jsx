@@ -2,7 +2,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { registerFailure } from "../redux/user/userSlice";
+import { registerFailure, registerStart } from "../redux/user/userSlice";
 
 export const RegisterPage = () => {
   const { error } = useSelector((state) => state.user);
@@ -17,6 +17,7 @@ export const RegisterPage = () => {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    dispatch(registerStart());
     try {
       const res = await fetch("/api/auth/register", {
         method: "POST",
