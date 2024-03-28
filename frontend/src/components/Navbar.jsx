@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { FiSearch, FiUser, FiShoppingCart } from "react-icons/fi";
-import { Dropdown } from "flowbite-react";
+import { Dropdown, Avatar } from "flowbite-react";
+import { useSelector } from "react-redux";
 
 export const Navbar = () => {
+  const { currentUser } = useSelector((state) => state.user);
   return (
     <header className="bg-black">
       <div className="flex flex-col md:flex-row py-8  items-center container mx-auto gap-6 xl:gap-0">
@@ -30,15 +32,44 @@ export const Navbar = () => {
         </div>
         <div className="flex flex-1 justify-center">
           <div className="flex ml-auto items-center text-2xl gap-4">
-            <Link>
+            <Link className="px-4">
               <FiSearch />
-            </Link>
-            <Link to={"/login"}>
-              <FiUser />
             </Link>
             <Link>
               <FiShoppingCart />
             </Link>
+            {currentUser ? (
+              <Dropdown
+                color={"transparent"}
+                label={
+                  <Avatar
+                    alt="user"
+                    className="block px-0 py-0"
+                    img={currentUser.profilePicture}
+                    rounded
+                  />
+                }
+                arrowIcon={false}
+              >
+                <Dropdown.Header>
+                  <span className="block text-sm">@{currentUser.username}</span>
+                  <span className="block truncate text-sm font-medium">
+                    {currentUser.email}
+                  </span>
+                </Dropdown.Header>
+                <Link to={"/profile"}>
+                  <Dropdown.Item>Profile</Dropdown.Item>
+                </Link>
+                <Dropdown.Divider />
+                <Dropdown.Item>
+                  <button>Sign Out</button>
+                </Dropdown.Item>
+              </Dropdown>
+            ) : (
+              <Link to={"/login"}>
+                <FiUser />
+              </Link>
+            )}
           </div>
         </div>
       </div>
