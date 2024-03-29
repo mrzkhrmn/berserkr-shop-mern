@@ -1,8 +1,8 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { FcGoogle } from "react-icons/fc";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { registerFailure, registerStart } from "../redux/user/userSlice";
+import { OAuth } from "../components/OAuth";
 
 export const RegisterPage = () => {
   const { error } = useSelector((state) => state.user);
@@ -97,12 +97,7 @@ export const RegisterPage = () => {
               <p className="w-full text-center flex items-center before:bg-white before:flex-1 after:bg-white  after:h-[2px] before:h-[2px] after:flex-1">
                 <span>ya da</span>
               </p>
-              <button
-                type="button"
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 border border-white hover:border-black hover:bg-white hover:text-black transition duration-300"
-              >
-                <FcGoogle /> Google ile devam et
-              </button>
+              <OAuth />
               {error && <p className="text-red-500">{error}</p>}
             </div>
           </form>

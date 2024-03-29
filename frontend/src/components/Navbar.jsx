@@ -79,7 +79,9 @@ export const Navbar = () => {
                 </Link>
                 <Dropdown.Divider />
                 <Dropdown.Item>
-                  <button onClick={handleLogout}>Sign Out</button>
+                  <button type="button" onClick={handleLogout}>
+                    Sign Out
+                  </button>
                 </Dropdown.Item>
               </Dropdown>
             ) : (
