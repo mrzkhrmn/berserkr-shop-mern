@@ -6,6 +6,7 @@ import {
   loginStart,
   loginSuccess,
 } from "../redux/user/userSlice";
+import { toast } from "react-toastify";
 
 export const LoginPage = () => {
   const { loading } = useSelector((state) => state.user);
@@ -31,6 +32,7 @@ export const LoginPage = () => {
       if (data.error) {
         loginFailure(data.error);
         console.log(data.error);
+        toast.error(data.error);
         return;
       }
 
@@ -41,6 +43,7 @@ export const LoginPage = () => {
     } catch (error) {
       dispatch(loginFailure(error.message));
       console.log(error.message);
+      toast.error(error.message);
     }
   }
 
@@ -86,7 +89,6 @@ export const LoginPage = () => {
             <div className="flex flex-col gap-4">
               <button
                 type="submit"
-                disabled={loading}
                 className="w-full px-4 py-2 border border-white hover:border-black hover:bg-white hover:text-black transition duration-300"
               >
                 Üye Girişi

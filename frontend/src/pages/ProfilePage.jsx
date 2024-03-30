@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getDownloadURL,
   uploadBytesResumable,
@@ -7,6 +7,12 @@ import {
   ref,
 } from "firebase/storage";
 import { app } from "../firebase";
+import {
+  updateFailure,
+  updateStart,
+  updateSuccess,
+} from "../redux/user/userSlice";
+import { toast } from "react-toastify";
 
 export const ProfilePage = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -17,6 +23,7 @@ export const ProfilePage = () => {
   const [formData, setFormData] = useState({});
 
   const fileRef = useRef();
+  const dispatch = useDispatch();
 
   function handleFormDataChange(e) {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -60,6 +67,31 @@ export const ProfilePage = () => {
     );
   }
 
+  async function handleSubmit(e) {
+    e.preventDefault();
+    if (Object.keys(formData).length === 0) {
+      return;
+    }
+    try {
+      dispatch(updateStart());
+      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        dispatch(updateFailure(data.message));
+      } else {
+        dispatch(updateSuccess(data));
+        toast.success("User Profile Updated");
+      }
+    } catch (error) {
+      dispatch(updateFailure(error.message));
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     if (imageFile) {
       uploadImage();
@@ -68,7 +100,10 @@ export const ProfilePage = () => {
 
   return (
     <div className="container mx-auto">
-      <form className="max-w-md mx-auto flex flex-col gap-4 mt-14">
+      <form
+        onSubmit={handleSubmit}
+        className="max-w-md mx-auto flex flex-col gap-4 mt-14"
+      >
         <input
           type="file"
           accept="image/*"
@@ -93,7 +128,7 @@ export const ProfilePage = () => {
             id="username"
             placeholder="Username..."
             type="text"
-            value={currentUser.username}
+            defaultValue={currentUser.username}
             onChange={handleFormDataChange}
           />
         </div>
@@ -105,7 +140,7 @@ export const ProfilePage = () => {
             id="email"
             placeholder="Email..."
             type="email"
-            value={currentUser.email}
+            defaultValue={currentUser.email}
             onChange={handleFormDataChange}
           />
         </div>
