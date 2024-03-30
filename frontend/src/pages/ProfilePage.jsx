@@ -8,6 +8,8 @@ import {
 } from "firebase/storage";
 import { app } from "../firebase";
 import {
+  deleteSuccess,
+  logoutSuccess,
   updateFailure,
   updateStart,
   updateSuccess,
@@ -69,9 +71,7 @@ export const ProfilePage = () => {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (Object.keys(formData).length === 0) {
-      return;
-    }
+
     try {
       dispatch(updateStart());
       const res = await fetch(`/api/user/update/${currentUser._id}`, {
@@ -89,6 +89,40 @@ export const ProfilePage = () => {
     } catch (error) {
       dispatch(updateFailure(error.message));
       console.log(error);
+    }
+  }
+
+  async function handleLogout() {
+    try {
+      if (window.confirm("Are you sure to logout?")) {
+        const res = await fetch("/api/auth/logout", { method: "POST" });
+        const data = await res.json();
+        if (data.error) {
+          console.log(data.error);
+          return;
+        }
+        dispatch(logoutSuccess());
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+  async function handleDelete() {
+    try {
+      if (window.confirm("Are you sure to logout?")) {
+        const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+          method: "DELETE",
+        });
+        const data = await res.json();
+        if (data.error) {
+          console.log(data.error);
+          return;
+        }
+        dispatch(deleteSuccess());
+      }
+    } catch (error) {
+      console.log(error.message);
     }
   }
 
@@ -133,7 +167,7 @@ export const ProfilePage = () => {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label htmlFor="username">Email</label>
+          <label htmlFor="email">Email</label>
           <input
             className="text-black p-2"
             name="email"
@@ -145,7 +179,7 @@ export const ProfilePage = () => {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label htmlFor="username">Password</label>
+          <label htmlFor="password">Password</label>
           <input
             className="text-black p-2"
             name="password"
@@ -162,10 +196,18 @@ export const ProfilePage = () => {
           Update Profile
         </button>
         <div className="text-red-500 flex justify-between items-center">
-          <button type="button" className="hover:underline">
+          <button
+            onClick={handleLogout}
+            type="button"
+            className="hover:underline"
+          >
             Log Out
           </button>
-          <button type="button" className="hover:underline">
+          <button
+            onClick={handleDelete}
+            type="button"
+            className="hover:underline"
+          >
             Delete Profile
           </button>
         </div>
