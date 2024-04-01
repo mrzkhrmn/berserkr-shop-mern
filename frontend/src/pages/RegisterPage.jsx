@@ -104,7 +104,7 @@ export const RegisterPage = () => {
         </div>
         <div className="">
           <img
-            src="https://cdn.myikas.com/images/theme-images/5423b470-64ea-44bd-81a2-fb581e2b6fa8/image_1080.webp"
+            src="https://cdn.myikas.com/images/theme-images/faf53656-9385-4fe3-97f9-866fe11fb5bf/image_1080.webp"
             alt=""
             className="max-w-[950px] h-[950px]"
           />

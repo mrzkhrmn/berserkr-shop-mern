@@ -3,6 +3,7 @@ import { FiSearch, FiUser, FiShoppingCart } from "react-icons/fi";
 import { Dropdown, Avatar } from "flowbite-react";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutSuccess } from "../redux/user/userSlice";
+import { toast } from "react-toastify";
 
 export const Navbar = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -18,6 +19,7 @@ export const Navbar = () => {
         return;
       }
       dispatch(logoutSuccess());
+      toast.success("Logged Out!");
     } catch (error) {
       console.log(error);
     }
@@ -32,13 +34,29 @@ export const Navbar = () => {
               <Dropdown.Item>The Berserkr</Dropdown.Item>
               <Dropdown.Item>The Ronin</Dropdown.Item>
             </Dropdown>
-            <Dropdown label={"Taki"} color={"tranparent"} inline>
-              <Dropdown.Item>Bilezikler</Dropdown.Item>
-              <Dropdown.Item>Yüzükler</Dropdown.Item>
+            <Dropdown
+              label={<Link to={"/taki"}>Taki</Link>}
+              color={"tranparent"}
+              inline
+            >
+              <Dropdown.Item>
+                <Link to={"/taki?category=bilezik"}>Bilezikler</Link>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <Link to={"/taki?category=yuzuk"}>Yüzükler</Link>
+              </Dropdown.Item>
             </Dropdown>
-            <Dropdown label={"Giyim"} color={"tranparent"} inline>
-              <Dropdown.Item>T-shirts</Dropdown.Item>
-              <Dropdown.Item>Pantolonlar</Dropdown.Item>
+            <Dropdown
+              label={<Link to={"/giyim"}>Giyim</Link>}
+              color={"tranparent"}
+              inline
+            >
+              <Dropdown.Item>
+                <Link to={"/giyim?category=shirt"}>T-shirts</Link>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <Link to={"/giyim?category=pants"}>Pantolonlar</Link>
+              </Dropdown.Item>
             </Dropdown>
           </nav>
         </div>
@@ -77,6 +95,11 @@ export const Navbar = () => {
                 <Link to={"/profile"}>
                   <Dropdown.Item>Profile</Dropdown.Item>
                 </Link>
+                {currentUser.isAdmin && (
+                  <Link to={"/dashboard"}>
+                    <Dropdown.Item>Dashboard</Dropdown.Item>
+                  </Link>
+                )}
                 <Dropdown.Divider />
                 <Dropdown.Item>
                   <button type="button" onClick={handleLogout}>
