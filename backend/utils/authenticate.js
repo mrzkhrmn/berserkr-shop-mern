@@ -1,21 +1,26 @@
 import jwt from "jsonwebtoken";
+import User from "../models/userModel.js";
 
 export const authenticate = async (req, res, next) => {
   const token = req.cookies.jwt;
 
-  if (!token) {
-    return res.status(401).json({ error: "Unauthorized" });
-  }
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) {
-      return res.status(401).json({ error: "Unauthorized" });
+  if (token) {
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = await User.findById(decoded.id).select("-password");
+      next();
+    } catch (error) {
+      res.status(401);
+      throw new Error("Not authorized, token failed");
     }
-    req.user = user;
-    next();
-  });
+  } else {
+    res.status(401);
+    throw new Error("Not authorized, no token");
+  }
 };
 
 export const authorizedAdmin = (req, res, next) => {
+  console.log(req.user);
   if (req.user && req.user.isAdmin) {
     next();
   } else {

@@ -76,40 +76,63 @@ export const CreateProduct = () => {
     });
   };
 
+  function handleChange(e) {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    try {
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  console.log(formData);
+
   return (
-    <div className="flex gap-4">
+    <form onSubmit={handleSubmit} className="flex gap-4">
       <div className="flex flex-col gap-4 text-black">
         <input
           className="px-2 py-3"
           type="text"
           placeholder="Brand..."
           id="brand"
+          onChange={handleChange}
         />
         <input
           className="px-2 py-3"
           type="text"
           placeholder="Name..."
           id="name"
+          onChange={handleChange}
         />
-        <input
+        <textarea
           className="px-2 py-3"
-          type="textArea"
           placeholder="Description..."
           id="description"
+          onChange={handleChange}
         />
         <input
           className="px-2 py-3"
           type="number"
           placeholder="Price..."
           id="price"
+          onChange={handleChange}
         />
         <input
           className="px-2 py-3"
           type="number"
           placeholder="Count..."
           id="count"
+          onChange={handleChange}
         />
-        <select name="size" id="size" className="text-black px-1 py-2">
+        <select
+          name="size"
+          id="size"
+          className="text-black px-1 py-2"
+          onChange={handleChange}
+        >
           <option value={""} selected hidden>
             Size
           </option>
@@ -167,6 +190,6 @@ export const CreateProduct = () => {
             </div>
           ))}
       </div>
-    </div>
+    </form>
   );
 };
