@@ -96,7 +96,7 @@ export const Navbar = () => {
                   <Dropdown.Item>Profile</Dropdown.Item>
                 </Link>
                 {currentUser.isAdmin && (
-                  <Link to={"/dashboard"}>
+                  <Link to={"/dashboard?tab=dashboard"}>
                     <Dropdown.Item>Dashboard</Dropdown.Item>
                   </Link>
                 )}
