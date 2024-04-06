@@ -6,6 +6,7 @@ import {
   uploadBytesResumable,
   getStorage,
 } from "firebase/storage";
+import { toast } from "react-toastify";
 
 export const CreateProduct = () => {
   const [files, setFiles] = useState([]);
@@ -83,6 +84,22 @@ export const CreateProduct = () => {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
+      const res = await fetch("/api/product/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (data.error) {
+        console.log(data.error);
+        toast.success("Something went wrong");
+        return;
+      }
+      if (res.ok) {
+        toast.success("Product created");
+      } else {
+        toast.success("Something went wrong");
+      }
     } catch (error) {
       console.log(error);
     }

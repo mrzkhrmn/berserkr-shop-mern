@@ -34,7 +34,7 @@ export const DashboardPage = () => {
           </Link>
         </div>
       </div>
-      <div className="flex justify-center flex-1">
+      <div className="flex justify-center flex-1 mt-10">
         {tab === "dashboard" && <h1>dashboard</h1>}
         {tab === "products" && <CreateProduct />}
       </div>
