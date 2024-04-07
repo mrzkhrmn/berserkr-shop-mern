@@ -9,3 +9,7 @@ const categorySchema = mongoose.Schema({
     unique: true,
   },
 });
+
+const Category = mongoose.model("Category", categorySchema);
+
+export default Category;
