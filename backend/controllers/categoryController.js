@@ -20,3 +20,13 @@ export const createCategory = async (req, res) => {
     res.status(400).json({ error: "error in createCategory " + error });
   }
 };
+
+export const getAllCategories = async (req, res) => {
+  try {
+    const categories = await Category.find({});
+    res.status(200).json(categories);
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: "error in getAllCategories " + error });
+  }
+};

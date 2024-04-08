@@ -8,7 +8,11 @@ const productSchema = mongoose.Schema(
     description: { type: String, required: true },
     count: { type: Number, required: true, default: 0 },
     size: { type: String, required: true },
-    category: { type: ObjectId, required: true, ref: "Category" },
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "Category",
+    },
     replies: [
       {
         userId: {

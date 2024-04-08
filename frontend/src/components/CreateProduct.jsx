@@ -110,55 +110,67 @@ export const CreateProduct = () => {
   return (
     <form onSubmit={handleSubmit} className="flex gap-4">
       <div className="flex flex-col gap-4 text-black">
-        <input
-          className="px-2 py-3"
-          type="text"
-          placeholder="Brand..."
-          id="brand"
-          onChange={handleChange}
-        />
-        <input
-          className="px-2 py-3"
-          type="text"
-          placeholder="Name..."
-          id="name"
-          onChange={handleChange}
-        />
+        <div className="flex items-center gap-4">
+          <input
+            className="px-2 py-3"
+            type="text"
+            placeholder="Brand..."
+            id="brand"
+            onChange={handleChange}
+          />
+          <input
+            className="px-2 py-3"
+            type="text"
+            placeholder="Name..."
+            id="name"
+            onChange={handleChange}
+          />
+        </div>
         <textarea
           className="px-2 py-3"
           placeholder="Description..."
           id="description"
           onChange={handleChange}
         />
-        <input
-          className="px-2 py-3"
-          type="number"
-          placeholder="Price..."
-          id="price"
-          onChange={handleChange}
-        />
-        <input
-          className="px-2 py-3"
-          type="number"
-          placeholder="Count..."
-          id="count"
-          onChange={handleChange}
-        />
-        <select
-          name="size"
-          id="size"
-          className="text-black px-1 py-2"
-          onChange={handleChange}
-        >
-          <option value={""} selected hidden>
-            Size
-          </option>
-          {sizes.map((size) => (
-            <option key={size} value={size}>
-              {size}
+        <div className="flex items-center gap-4">
+          <input
+            className="px-2 py-3"
+            type="number"
+            placeholder="Price..."
+            id="price"
+            onChange={handleChange}
+          />
+          <input
+            className="px-2 py-3"
+            type="number"
+            placeholder="Count..."
+            id="count"
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          <select
+            name="size"
+            id="size"
+            className="text-black px-1 py-2"
+            onChange={handleChange}
+          >
+            <option value={""} selected hidden>
+              Size
             </option>
-          ))}
-        </select>
+            {sizes.map((size) => (
+              <option key={size} value={size}>
+                {size}
+              </option>
+            ))}
+          </select>
+          <select
+            name="category"
+            id="category"
+            className="text-black px-1 py-2"
+            onChange={handleChange}
+          ></select>
+        </div>
       </div>
       <div className="flex flex-col gap-4">
         <p>
