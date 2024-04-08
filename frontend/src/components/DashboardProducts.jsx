@@ -1,3 +1,9 @@
+import { CreateProduct } from "./CreateProduct";
+
 export const DashboardProducts = () => {
-  return <div>DashboardProducts</div>;
+  return (
+    <div>
+      <CreateProduct />
+    </div>
+  );
 };

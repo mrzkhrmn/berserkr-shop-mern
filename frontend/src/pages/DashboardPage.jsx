@@ -2,6 +2,8 @@ import { useSelector } from "react-redux";
 import { Link, Navigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { CreateProduct } from "../components/CreateProduct";
+import { DashboardProducts } from "../components/DashboardProducts";
+import { DashboardCategories } from "../components/DashboardCategories";
 
 export const DashboardPage = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -32,11 +34,18 @@ export const DashboardPage = () => {
           >
             <div>Products</div>
           </Link>
+          <Link
+            to={"/dashboard?tab=categories"}
+            className="text-center hover:bg-white/20 py-4 rounded-md transition duration-200"
+          >
+            <div>Categories</div>
+          </Link>
         </div>
       </div>
-      <div className="flex justify-center flex-1 mt-10">
+      <div className=" mt-10  max-w-full flex-1">
         {tab === "dashboard" && <h1>dashboard</h1>}
-        {tab === "products" && <CreateProduct />}
+        {tab === "products" && <DashboardProducts />}
+        {tab === "categories" && <DashboardCategories />}
       </div>
     </div>
   ) : (
