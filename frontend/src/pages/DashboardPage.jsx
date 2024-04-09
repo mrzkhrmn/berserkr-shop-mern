@@ -42,7 +42,7 @@ export const DashboardPage = () => {
           </Link>
         </div>
       </div>
-      <div className=" mt-10  max-w-full flex-1">
+      <div className=" mt-10  flex-1 items-center mx-auto">
         {tab === "dashboard" && <h1>dashboard</h1>}
         {tab === "products" && <DashboardProducts />}
         {tab === "categories" && <DashboardCategories />}

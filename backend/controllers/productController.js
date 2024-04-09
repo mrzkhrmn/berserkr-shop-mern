@@ -11,6 +11,7 @@ export const createProduct = async (req, res) => {
       name: newProduct.name,
       description: newProduct.description,
       imageUrls: newProduct.imageUrls,
+      category: newProduct.category,
       count: newProduct.count,
       price: newProduct.price,
       size: newProduct.size,
