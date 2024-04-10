@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import { CreateProduct } from "./CreateProduct";
 import { Table, Modal } from "flowbite-react";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 export const DashboardProducts = () => {
   const { products } = useSelector((state) => state.product);
@@ -23,7 +24,28 @@ export const DashboardProducts = () => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   }
 
-  async function handleUpdate() {}
+  async function handleUpdate(id) {
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/product/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (data.error) {
+        toast.error(data.error);
+        setLoading(false);
+      }
+      toast.success("Product Updated");
+      setLoading(false);
+      setOpenModal(false);
+    } catch (error) {
+      console.log(error);
+      toast.error(error);
+      setLoading(false);
+    }
+  }
 
   return (
     <div>
@@ -116,7 +138,7 @@ export const DashboardProducts = () => {
             <div className="flex justify-between w-full">
               <button
                 disabled={loading}
-                onClick={handleUpdate}
+                onClick={() => handleUpdate(selectedProduct._id)}
                 className="px-4 py-3 border border-white  hover:bg-white/10  transition duration-300"
               >
                 {loading ? "Updating..." : "Update Product"}
