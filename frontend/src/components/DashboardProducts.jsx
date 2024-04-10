@@ -1,8 +1,9 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { CreateProduct } from "./CreateProduct";
 import { Table, Modal } from "flowbite-react";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { setProducts } from "../redux/products/productSlice";
 
 export const DashboardProducts = () => {
   const { products } = useSelector((state) => state.product);
@@ -11,6 +12,8 @@ export const DashboardProducts = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
 
   const sizes = ["XS", "S", "M", "L", "XL", "XXL", "3XL", "4XL", "5XL", "6XL"];
 
@@ -22,6 +25,28 @@ export const DashboardProducts = () => {
 
   function handleChange(e) {
     setFormData({ ...formData, [e.target.id]: e.target.value });
+  }
+
+  async function handleDelete(id) {
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/product/${id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data.error) {
+        toast.error(data.error);
+        setLoading(false);
+      }
+      toast.success("Product Deleted");
+      dispatch(setProducts(products.filter((product) => product._id !== id)));
+      setLoading(false);
+      setOpenModal(false);
+    } catch (error) {
+      console.log(error);
+      toast.error(error);
+      setLoading(false);
+    }
   }
 
   async function handleUpdate(id) {
@@ -144,8 +169,8 @@ export const DashboardProducts = () => {
                 {loading ? "Updating..." : "Update Product"}
               </button>
               <button
-                color="gray"
                 className=" px-4 py-3 border border-red-500 text-red-500  hover:bg-white/10  transition duration-300"
+                onClick={() => handleDelete(selectedProduct._id)}
               >
                 Delete Product
               </button>
