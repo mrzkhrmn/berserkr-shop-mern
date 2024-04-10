@@ -1,14 +1,16 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { CreateProduct } from "../components/CreateProduct";
 import { DashboardProducts } from "../components/DashboardProducts";
 import { DashboardCategories } from "../components/DashboardCategories";
+import { setCategories } from "../redux/category/categorySlice";
+import { setProducts } from "../redux/products/productSlice";
 
 export const DashboardPage = () => {
   const { currentUser } = useSelector((state) => state.user);
   const location = useLocation();
   const [tab, setTab] = useState("dashboard");
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -16,7 +18,28 @@ export const DashboardPage = () => {
     if (tabFromuRL) {
       setTab(tabFromuRL);
     }
-  }, [location.search]);
+
+    async function getAllCategories() {
+      const res = await fetch("/api/category/", { method: "GET" });
+      const data = await res.json();
+      if (data.error) {
+        console.log(data.error);
+        return;
+      }
+      dispatch(setCategories(data));
+    }
+    async function getAllProducts() {
+      const res = await fetch("/api/product/", { method: "GET" });
+      const data = await res.json();
+      if (data.error) {
+        console.log(data.error);
+        return;
+      }
+      dispatch(setProducts(data));
+    }
+    getAllCategories();
+    getAllProducts();
+  }, [location.search, dispatch]);
 
   return currentUser.isAdmin ? (
     <div className="min-h-screen container flex">

@@ -21,3 +21,13 @@ export const createProduct = async (req, res) => {
     console.log(error);
   }
 };
+
+export const getAllProducts = async (req, res) => {
+  try {
+    const allProducts = await Product.find({}).sort({ createdAt: -1 });
+    res.status(200).json(allProducts);
+  } catch (error) {
+    res.status(500).json({ error: "Error in getAllProducts" + error });
+    console.log(error);
+  }
+};

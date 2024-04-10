@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { CreateCategory } from "./CreateCategory";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,20 +28,6 @@ export const DashboardCategories = () => {
       }
     }
   }
-  useEffect(() => {
-    async function getAllCategories() {
-      const res = await fetch("/api/category/", { method: "GET" });
-      const data = await res.json();
-      if (data.error) {
-        console.log(data.error);
-        return;
-      }
-      if (data) {
-        dispatch(setCategories(data));
-      }
-    }
-    getAllCategories();
-  }, []);
   return (
     <div className="flex flex-col gap-10">
       <CreateCategory setCategories={setCategories} categories={categories} />
