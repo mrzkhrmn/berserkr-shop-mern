@@ -31,3 +31,28 @@ export const getAllProducts = async (req, res) => {
     console.log(error);
   }
 };
+
+export const updateProduct = async (req, res) => {
+  const { brand, name, category, size, count, price, description } = req.body;
+  const { id } = req.params;
+  try {
+    const product = await Product.findById(id);
+
+    if (!product) return res.status(404).json({ error: "Product not found!" });
+
+    product.brand = brand || product.brand;
+    product.name = name || product.name;
+    product.category = category || product.category;
+    product.size = size || product.size;
+    product.count = count || product.count;
+    product.price = price || product.price;
+    product.description = description || product.description;
+
+    await product.save();
+
+    res.status(200).json(product);
+  } catch (error) {
+    res.status(500).json({ error: "Error in updateProduct" + error });
+    console.log(error);
+  }
+};
