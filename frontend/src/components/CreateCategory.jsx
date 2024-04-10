@@ -1,9 +1,15 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { setCategories } from "../redux/category/categorySlice";
 
-export const CreateCategory = ({ categories, setCategories }) => {
+export const CreateCategory = () => {
   const [nameData, setNameData] = useState("");
   const [loading, setLoading] = useState(false);
+  const { categories } = useSelector((state) => state.category);
+
+  const dispatch = useDispatch();
+
   async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
@@ -19,7 +25,7 @@ export const CreateCategory = ({ categories, setCategories }) => {
         return;
       }
       setLoading(false);
-      setCategories([data, ...categories]);
+      dispatch(setCategories([data, ...categories]));
       setNameData("");
       toast.success("Category Created!");
     } catch (error) {

@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import { CreateCategory } from "./CreateCategory";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { setCategories } from "../redux/category/categorySlice";
 
 export const DashboardCategories = () => {
-  const [categories, setCategories] = useState([]);
+  const { categories } = useSelector((state) => state.category);
+
+  const dispatch = useDispatch();
 
   async function handleDelete(id) {
     if (window.confirm("Are you sure to delete this category?")) {
@@ -15,7 +19,9 @@ export const DashboardCategories = () => {
           toast.error(data.error);
           return;
         }
-        setCategories(categories.filter((category) => category.id !== id));
+        dispatch(
+          setCategories(categories.filter((category) => category._id !== id))
+        );
         toast.success("Category Deleted!");
       } catch (error) {
         toast.error(error);
@@ -32,7 +38,7 @@ export const DashboardCategories = () => {
         return;
       }
       if (data) {
-        setCategories(data);
+        dispatch(setCategories(data));
       }
     }
     getAllCategories();

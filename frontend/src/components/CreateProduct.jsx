@@ -108,7 +108,7 @@ export const CreateProduct = () => {
   console.log(formData);
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-4">
+    <form onSubmit={handleSubmit} className="flex justify-center gap-4">
       <div className="flex flex-col gap-4 text-black">
         <div className="flex items-center gap-4">
           <input
@@ -148,11 +148,11 @@ export const CreateProduct = () => {
             onChange={handleChange}
           />
         </div>
-        <div>
+        <div className="flex items-center gap-4 justify-between">
           <select
             name="size"
             id="size"
-            className="text-black px-1 py-2"
+            className="text-black px-1 py-2 w-full"
             onChange={handleChange}
           >
             <option value={""} selected hidden>
@@ -167,9 +167,18 @@ export const CreateProduct = () => {
           <select
             name="category"
             id="category"
-            className="text-black px-1 py-2"
+            className="text-black px-1 py-2 w-full"
             onChange={handleChange}
-          ></select>
+          >
+            <option value={""} selected hidden>
+              Category
+            </option>
+            {sizes.map((size) => (
+              <option key={size} value={size}>
+                {size}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
       <div className="flex flex-col gap-4">
