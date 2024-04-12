@@ -6,6 +6,7 @@ import authRouter from "./routes/authRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import productRouter from "./routes/productRoutes.js";
 import categoryRouter from "./routes/categoryRoutes.js";
+import commentRouter from "./routes/commentRoutes.js";
 import connectDatabase from "./db/connectDatabase.js";
 
 dotenv.config();
@@ -21,6 +22,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/product", productRouter);
 app.use("/api/category", categoryRouter);
+app.use("/api/comment", commentRouter);
 
 app.listen("9000", () => {
   console.log("Server is running on port 9000");
