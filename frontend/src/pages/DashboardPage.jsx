@@ -5,9 +5,13 @@ import { DashboardProducts } from "../components/DashboardProducts";
 import { DashboardCategories } from "../components/DashboardCategories";
 import { setCategories } from "../redux/category/categorySlice";
 import { setProducts } from "../redux/products/productSlice";
+import { Dashboard } from "../components/Dashboard";
 
 export const DashboardPage = () => {
   const { currentUser } = useSelector((state) => state.user);
+  const [users, setUsers] = useState([]);
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [lastMonthUsers, setLastMonthUsers] = useState(0);
   const location = useLocation();
   const [tab, setTab] = useState("dashboard");
   const dispatch = useDispatch();
@@ -37,8 +41,20 @@ export const DashboardPage = () => {
       }
       dispatch(setProducts(data));
     }
+    async function getAllUsers() {
+      const res = await fetch("/api/user/", { method: "GET" });
+      const data = await res.json();
+      if (data.error) {
+        console.log(data.error);
+        return;
+      }
+      setUsers(data.users);
+      setTotalUsers(data.totalUsers);
+      setLastMonthUsers(data.lastMonthUsers);
+    }
     getAllCategories();
     getAllProducts();
+    getAllUsers();
   }, [location.search, dispatch]);
 
   return currentUser.isAdmin ? (
@@ -66,7 +82,13 @@ export const DashboardPage = () => {
         </div>
       </div>
       <div className=" mt-10  flex-1 items-center mx-auto">
-        {tab === "dashboard" && <h1>dashboard</h1>}
+        {tab === "dashboard" && (
+          <Dashboard
+            users={users}
+            totalUsers={totalUsers}
+            lastMonthUsers={lastMonthUsers}
+          />
+        )}
         {tab === "products" && <DashboardProducts />}
         {tab === "categories" && <DashboardCategories />}
       </div>

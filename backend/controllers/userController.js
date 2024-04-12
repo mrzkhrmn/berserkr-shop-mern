@@ -71,6 +71,37 @@ export const deleteUser = async (req, res, next) => {
     await User.findByIdAndDelete(req.params.userId);
     res.status(200).json({ message: "User deleted!" });
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({ error: error.message });
+    console.log("Error in deleteUser: " + error.message);
+  }
+};
+
+export const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find({}).sort({ createdAt: -1 });
+
+    const usersWithoutPassword = users.map((user) => {
+      const { password, ...rest } = user._doc;
+      return rest;
+    });
+
+    const totalUsers = await User.countDocuments();
+
+    const now = new Date();
+    const oneMonthAgo = new Date(
+      now.getFullYear(),
+      now.getMonth() - 1,
+      now.getDate()
+    );
+
+    const lastMonthUsers = await User.countDocuments({
+      createdAt: { $gte: oneMonthAgo },
+    });
+    res
+      .status(200)
+      .json({ users: usersWithoutPassword, lastMonthUsers, totalUsers });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+    console.log("Error in getAllUsers: " + error.message);
   }
 };
