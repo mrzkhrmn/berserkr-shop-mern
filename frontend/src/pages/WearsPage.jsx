@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { ProductItem } from "../components/ProductItem";
 
-export const JewelryPage = () => {
+export const WearsPage = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    async function getJewelryProducts() {
+    async function getWearsProducts() {
       try {
-        const res = await fetch(`/api/product/taki`, { method: "GET" });
+        const res = await fetch(`/api/product/giyim`, { method: "GET" });
         const data = await res.json();
         if (data.error) {
           console.log(data.error);
@@ -18,12 +18,12 @@ export const JewelryPage = () => {
         console.log(error);
       }
     }
-    getJewelryProducts();
+    getWearsProducts();
   }, []);
 
   return (
     <div className="container mx-auto">
-      <h1 className="text-3xl font-bold text-center my-16">TAKI</h1>
+      <h1 className="text-3xl font-bold text-center my-16">GIYIM</h1>
       <div className="flex justify-center flex-wrap">
         {products.map((product) => (
           <ProductItem key={product._id} product={product} />

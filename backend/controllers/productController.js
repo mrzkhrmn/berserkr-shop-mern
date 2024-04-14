@@ -1,3 +1,4 @@
+import Category from "../models/categoryModel.js";
 import Product from "../models/productModel.js";
 
 export const createProduct = async (req, res) => {
@@ -28,6 +29,32 @@ export const getAllProducts = async (req, res) => {
     res.status(200).json(allProducts);
   } catch (error) {
     res.status(500).json({ error: "Error in getAllProducts" + error });
+    console.log(error);
+  }
+};
+
+export const getJewelryProducts = async (req, res) => {
+  try {
+    const category = await Category.find({ name: "Taki" });
+    if (!category) res.status(404).json({ error: "Category not found!" });
+    const jewelryProducts = await Product.find({ category });
+
+    res.status(200).json(jewelryProducts);
+  } catch (error) {
+    res.status(500).json({ error: "Error in getJewelryProducts" + error });
+    console.log(error);
+  }
+};
+
+export const getWearProducts = async (req, res) => {
+  try {
+    const category = await Category.find({ name: "Giyim" });
+    if (!category) res.status(404).json({ error: "Category not found!" });
+    const wearProducts = await Product.find({ category });
+
+    res.status(200).json(wearProducts);
+  } catch (error) {
+    res.status(500).json({ error: "Error in getWearProducts" + error });
     console.log(error);
   }
 };
@@ -68,6 +95,21 @@ export const deleteProduct = async (req, res) => {
     res.status(200).json("Product deleted");
   } catch (error) {
     res.status(500).json({ error: "Error in deleteProduct" + error });
+    console.log(error);
+  }
+};
+
+export const getProductById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const product = await Product.findById(id);
+
+    if (!product) return res.status(404).json({ error: "Product not found!" });
+
+    res.status(200).json(product);
+  } catch (error) {
+    res.status(500).json({ error: "Error in getProductById" + error });
     console.log(error);
   }
 };

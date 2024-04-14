@@ -40,7 +40,7 @@ export const Navbar = () => {
               inline
             >
               <Dropdown.Item>
-                <Link to={"/taki?category=bilezik"}>Bilezikler</Link>
+                <Link to={"/taki?category=bileklik"}>Bileklikler</Link>
               </Dropdown.Item>
               <Dropdown.Item>
                 <Link to={"/taki?category=yuzuk"}>Yüzükler</Link>

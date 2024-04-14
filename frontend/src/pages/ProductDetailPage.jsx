@@ -1,14 +1,37 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { BsTruck } from "react-icons/bs";
 import { FaRegCopyright } from "react-icons/fa6";
 import { FaRegCommentAlt } from "react-icons/fa";
 
 import { Comment } from "../components/Comment";
+import { useParams } from "react-router-dom";
 
 export const ProductDetailPage = () => {
+  const [product, setProduct] = useState({});
+  const { id } = useParams();
   const sizes = ["XS", "S", "M", "L", "XL", "XXL", "3XL", "4XL", "5XL", "6XL"];
   const [selectedSize, setSelectedSize] = useState(sizes[0]);
+
+  useEffect(() => {
+    async function getProduct() {
+      try {
+        const res = await fetch(`/api/product/product/${id}`, {
+          method: "GET",
+        });
+        const data = await res.json();
+        if (data.error) {
+          console.log(data.error);
+          return;
+        }
+        setProduct(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getProduct();
+  }, [id]);
+
   return (
     <div className="container mx-auto mt-6">
       <div className="flex gap-6">
