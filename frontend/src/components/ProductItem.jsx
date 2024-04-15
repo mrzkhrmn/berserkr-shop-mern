@@ -15,7 +15,7 @@ export const ProductItem = ({ product }) => {
       />
       <h2 className=" font-semibold mt-2 text-[17px]">{product.brand}</h2>
       <p className=" text-[14px] font-light">{product.name}</p>
-      <p className="text-lg font-bold mt-6">₺{product.price}</p>
+      <p className="text-lg font-bold mt-6">₺{product.price.toFixed(2)}</p>
       {location.pathname.includes("giyim") ? (
         <p className="font-light text-sm">10 Beden</p>
       ) : (

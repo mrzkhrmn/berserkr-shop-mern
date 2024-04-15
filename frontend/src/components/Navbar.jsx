@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logoutSuccess } from "../redux/user/userSlice";
 import { toast } from "react-toastify";
 
-export const Navbar = () => {
+export const Navbar = ({ setIsOpen }) => {
   const { currentUser } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
@@ -70,9 +70,9 @@ export const Navbar = () => {
             <Link className="px-4">
               <FiSearch />
             </Link>
-            <Link>
+            <button onClick={() => setIsOpen((prev) => !prev)}>
               <FiShoppingCart />
-            </Link>
+            </button>
             {currentUser ? (
               <Dropdown
                 color={"transparent"}

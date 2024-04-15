@@ -7,13 +7,13 @@ const productSchema = mongoose.Schema(
     price: { type: Number, required: true },
     description: { type: String, required: true },
     count: { type: Number, required: true, default: 0 },
-    size: { type: String, required: true },
+    sizes: { type: String, required: true },
     category: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: "Category",
     },
-    replies: [
+    comments: [
       {
         userId: {
           type: mongoose.Schema.Types.ObjectId,

@@ -11,11 +11,17 @@ import { ProfilePage } from "./pages/ProfilePage";
 import { JewelryPage } from "./pages/JewelryPage";
 import { ProductDetailPage } from "./pages/ProductDetailPage";
 import { WearsPage } from "./pages/WearsPage";
+import { Drawer } from "./components/Drawer";
+import { useState } from "react";
+import { CartItem } from "./components/CartItem";
+import { useSelector } from "react-redux";
 
 function App() {
+  const { cartItems } = useSelector((state) => state.cart);
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <Router>
-      <Navbar />
+      <Navbar setIsOpen={setIsOpen} />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/register" element={<RegisterPage />} />
@@ -28,6 +34,11 @@ function App() {
           <Route path="/profile" element={<ProfilePage />} />
         </Route>
       </Routes>
+      <Drawer isOpen={isOpen} setIsOpen={setIsOpen} length={cartItems.length}>
+        {cartItems.map((item) => (
+          <CartItem key={item._id} item={item} />
+        ))}
+      </Drawer>
     </Router>
   );
 }
