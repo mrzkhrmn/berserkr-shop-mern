@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 const commentShcema = mongoose.Schema(
   {
     text: { type: String, required: true },
-    postId: { type: String, required: true },
-    postedBy: { type: String, required: true },
+    productId: { type: mongoose.Schema.Types.ObjectId, required: true },
+    userId: { type: String, required: true },
     likes: { type: Array, default: [] },
     numberOfLikes: { type: Number, default: 0 },
   },

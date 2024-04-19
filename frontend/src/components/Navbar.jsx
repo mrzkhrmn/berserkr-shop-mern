@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FiSearch, FiUser, FiShoppingCart } from "react-icons/fi";
 import { Dropdown, Avatar } from "flowbite-react";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,6 +9,7 @@ export const Navbar = ({ setIsOpen }) => {
   const { currentUser } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   async function handleLogout() {
     try {
@@ -19,6 +20,7 @@ export const Navbar = ({ setIsOpen }) => {
         return;
       }
       dispatch(logoutSuccess());
+      navigate("/login");
       toast.success("Logged Out!");
     } catch (error) {
       console.log(error);
@@ -30,34 +32,9 @@ export const Navbar = ({ setIsOpen }) => {
         <div className="flex flex-1 justify-center ">
           <nav className="mr-auto flex items-center text-md gap-6">
             <Link to={"/"}>Anasayfa</Link>
-            <Dropdown label={"Koleksiyonlar"} color={"dark"} inline>
-              <Dropdown.Item>The Berserkr</Dropdown.Item>
-              <Dropdown.Item>The Ronin</Dropdown.Item>
-            </Dropdown>
-            <Dropdown
-              label={<Link to={"/taki"}>Taki</Link>}
-              color={"tranparent"}
-              inline
-            >
-              <Dropdown.Item>
-                <Link to={"/taki?category=bileklik"}>Bileklikler</Link>
-              </Dropdown.Item>
-              <Dropdown.Item>
-                <Link to={"/taki?category=yuzuk"}>Yüzükler</Link>
-              </Dropdown.Item>
-            </Dropdown>
-            <Dropdown
-              label={<Link to={"/giyim"}>Giyim</Link>}
-              color={"tranparent"}
-              inline
-            >
-              <Dropdown.Item>
-                <Link to={"/giyim?category=shirt"}>T-shirts</Link>
-              </Dropdown.Item>
-              <Dropdown.Item>
-                <Link to={"/giyim?category=pants"}>Pantolonlar</Link>
-              </Dropdown.Item>
-            </Dropdown>
+
+            <Link to={"/taki"}>Taki</Link>
+            <Link to={"/giyim"}>Giyim</Link>
           </nav>
         </div>
         <div className="flex items-center">

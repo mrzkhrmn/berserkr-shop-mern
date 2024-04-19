@@ -35,7 +35,7 @@ export const Dashboard = ({ users, totalUsers, lastMonthUsers }) => {
         <div className="bg-[#28282f] flex flex-col p-4 gap-5 justify-between">
           <div className="flex items-center gap-32  rounded-lg">
             <div>
-              <h2 className="text-lg text-gray-400">Total Users</h2>
+              <h2 className="text-lg text-gray-400">Total Products</h2>
               <h2 className="text-3xl  font-light">{totalUsers}</h2>
             </div>
             <div className="bg-green-300 text-4xl p-3 rounded-full">

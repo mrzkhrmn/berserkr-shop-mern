@@ -3,24 +3,54 @@ import { FaStar } from "react-icons/fa";
 import { BsTruck } from "react-icons/bs";
 import { FaRegCopyright } from "react-icons/fa6";
 import { FaRegCommentAlt } from "react-icons/fa";
-
+import { Modal } from "flowbite-react";
 import { Comment } from "../components/Comment";
 import { useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { addToCart, increaseQuantity } from "../redux/cart/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../redux/cart/cartSlice";
 import { toast } from "react-toastify";
 
 export const ProductDetailPage = () => {
-  const [product, setProduct] = useState({});
-  const { id } = useParams();
   const sizes = ["XS", "S", "M", "L", "XL", "XXL", "3XL", "4XL", "5XL", "6XL"];
+  const [product, setProduct] = useState({});
+  const [productComments, setProductComments] = useState([]);
+  const [commentText, setCommentText] = useState("");
+  const [openModal, setOpenModal] = useState(false);
   const [selectedSize, setSelectedSize] = useState(sizes[0]);
   const [selectedImageUrl, setSelectedImageUrl] = useState("");
+  const { currentUser } = useSelector((state) => state.user);
+
+  const { id } = useParams();
   const dispatch = useDispatch();
 
   function handleAddToCart(item, quantity = 1) {
     dispatch(addToCart({ ...item, size: selectedSize, quantity }));
     toast.success("Product added to cart!");
+  }
+
+  async function handleAddComment() {
+    try {
+      const res = await fetch(`/api/comment/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          text: commentText,
+          userId: currentUser._id,
+          productId: product._id,
+        }),
+      });
+      const data = await res.json();
+
+      if (data.error) {
+        console.log(data.error);
+        return;
+      }
+
+      toast.success("Comment Added");
+      setOpenModal(false);
+    } catch (error) {
+      console.log(error.message);
+    }
   }
 
   useEffect(() => {
@@ -39,7 +69,23 @@ export const ProductDetailPage = () => {
         console.log(error);
       }
     }
+    async function getProductComments() {
+      try {
+        const res = await fetch(`/api/comment/${id}`, {
+          method: "GET",
+        });
+        const data = await res.json();
+        if (data.error) {
+          console.log(data.error);
+          return;
+        }
+        setProductComments(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
     getProduct();
+    getProductComments();
   }, [id]);
 
   if (!product.imageUrls) return;
@@ -75,7 +121,9 @@ export const ProductDetailPage = () => {
                 <FaStar />
                 <FaStar />
               </div>
-              <p className="text-white/30 text-sm">27 Degerlendirme</p>
+              <p className="text-white/30 text-sm">
+                {productComments.length} Degerlendirme
+              </p>
             </div>
             <h2 className="font-bold text-lg my-6">
               ₺{product.price.toFixed(2)}
@@ -157,17 +205,62 @@ export const ProductDetailPage = () => {
         <div className="my-48">
           <div className="flex justify-between mb-6">
             <h2 className="text-2xl font-light">Yorumlar</h2>
-            <button className="text-xl font-light flex items-center gap-2">
+            <button
+              onClick={() => setOpenModal(true)}
+              className="text-xl font-light flex items-center gap-2 hover:bg-white/20 px-4 py-3 rounded-lg transition duration-300"
+            >
               <FaRegCommentAlt /> <span>Yorum yap</span>
             </button>
+            <Modal
+              dismissible
+              show={openModal}
+              onClose={() => setOpenModal(false)}
+            >
+              <Modal.Header>Terms of Service</Modal.Header>
+              <Modal.Body>
+                <div className="space-y-6">
+                  <input
+                    type="text"
+                    id="text"
+                    placeholder="Your comment..."
+                    onChange={(e) => setCommentText(e.target.value)}
+                    className="bg-transparent outline-none w-full"
+                  />
+                </div>
+              </Modal.Body>
+              <Modal.Footer>
+                <div className="flex justify-between items-center w-full">
+                  <button
+                    onClick={() => handleAddComment()}
+                    className="py-3 hover:bg-black/20 px-2 rounded-lg"
+                  >
+                    Add Comment
+                  </button>
+
+                  <button
+                    className="py-3 hover:bg-black/20 px-2 rounded-lg"
+                    color="gray"
+                    onClick={() => setOpenModal(false)}
+                  >
+                    Decline
+                  </button>
+                </div>
+              </Modal.Footer>
+            </Modal>
           </div>
-          <div className="flex flex-col gap-6">
-            <Comment />
-            <Comment />
-            <Comment />
-            <Comment />
-            <Comment />
-          </div>
+          {productComments.length === 0 ? (
+            <p className="text-center">There are no comments yet</p>
+          ) : (
+            <div className="flex flex-col gap-6">
+              {productComments.map((comment) => (
+                <Comment
+                  key={comment._id}
+                  comment={comment}
+                  setProductComments={setProductComments}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     )
